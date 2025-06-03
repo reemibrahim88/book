@@ -10,6 +10,7 @@ def load_data():
 # App title and layout
 st.set_page_config(page_title="📚 Smart Book Finder", layout="wide")
 st.title("📚 Smart Book Finder")
+
 st.markdown("""
 <style>
     .main {
@@ -52,14 +53,29 @@ filtered_df = filtered_df[filtered_df["user_rating"] >= min_rating]
 st.subheader(f"📖 {len(filtered_df)} Books Found")
 for _, row in filtered_df.iterrows():
     with st.container():
+
+        # Book title
         st.markdown(f"### {row['title']}")
-        st.markdown(f"*Author:* {row['author']}  |  *Year:* {row['year_published']}  |  *Pages:* {row['number_of_pages']}  |  *Rating:* ⭐ {row['user_rating']}")
-        st.markdown(f"*Level:* {row['level']}  |  *Category:* {row['category']}")
+
+        # Author, Year, Pages, Rating 
+        st.markdown(
+            f"*Author:* {row['author']}  |  "
+            f"*Year:* {row['year_published']}  |  "
+            f"*Pages:* {row['number_of_pages']}  |  "
+            f"*Rating:* ⭐ {row['user_rating']}  |  "
+        )
+
+        st.markdown(
+        f"Level: {row['level']}  |  "
+        f"Category: {row['category']}"
+        )
+
+        # Summary
         with st.expander("📘 Summary"):
             st.write(row["summary of the book"])
         st.divider()
 
-# Download CSV
+# Download filtered results as CSV
 csv = filtered_df.to_csv(index=False)
 b64 = base64.b64encode(csv.encode()).decode()
 st.markdown(f'<a href="data:file/csv;base64,{b64}" download="filtered_books.csv">📥 Download Results as CSV</a>', unsafe_allow_html=True)
